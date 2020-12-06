@@ -12,7 +12,7 @@ typedef struct Queue{
 Queue;
 
 
-void init_queue(int size, Queue *queue);
+Queue* init_queue(int size);
 void enqueue(int value, Queue *queue);
 int dequeue(Queue *queue);
 bool is_empty_queue(Queue *queue);

@@ -1,11 +1,12 @@
 #include "queue.h"
 
-void init_queue(int max_size, Queue *queue) {
-  queue = malloc(sizeof(queue));
+Queue* init_queue(int max_size) {
+  Queue *queue = malloc(sizeof(queue));
   queue->max_size = max_size;
   queue->arr = malloc(sizeof(int) * max_size);
   queue->front = queue->rear = -1;
   printf("queue initialized\n");
+  return queue;
 }
 
 void enqueue(int value, Queue *queue) {
@@ -14,6 +15,8 @@ void enqueue(int value, Queue *queue) {
     queue->rear = (queue->rear + 1) % queue->max_size;
     if(is_empty_queue(queue)) queue->front = queue->rear;
     queue->arr[queue->rear] = value;
+  } else {
+    printf("Queue is full!\n");
   }
 }
 
@@ -33,7 +36,7 @@ bool is_empty_queue(Queue *queue) {
   return queue->front < 0;
 }
 bool is_full_queue(Queue *queue) {
-  return ((queue->front+1) % queue->max_size == queue->front);
+  return ((queue->rear+1) % queue->max_size == queue->front);
 }
 void destroy_queue(Queue *queue) {
   free(queue->arr);
@@ -41,9 +44,17 @@ void destroy_queue(Queue *queue) {
 }
 
 void print_queue(Queue *queue) {
+  if(is_empty_queue(queue)) {
+    printf("Queue is empty\n");
+    return;
+  }
+  printf("FRONT: %d\t", queue->front);
+  printf("REAR: %d\t", queue->rear);
+  printf("\n");
+
   int i;
-  for(i = queue->front; i != queue->rear; i = (i + 1) % queue->max_size) {
+  for(i = queue->front ; i != queue-> rear; i = (i+1) % queue->max_size ) {
     printf("%d ", queue->arr[i]);
   }
-  printf("\n");
+  printf("%d\n", queue->arr[queue->rear]);
 }

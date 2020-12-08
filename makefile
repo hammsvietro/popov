@@ -6,6 +6,12 @@ server: queue.o server.o
 client: queue.o client.o
 	gcc -Wall -o client queue.o client.o
 
+main: queue.o main.o
+	gcc -Wall -o main queue.o main.o
+
+main.o: main.c
+	gcc -Wall -c main.c
+
 queue.o: queue.c
 	gcc -Wall -c queue.c
 

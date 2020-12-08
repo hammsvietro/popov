@@ -10,7 +10,6 @@ Queue* init_queue(int max_size) {
 }
 
 void enqueue(int value, Queue *queue) {
-
   if(!is_full_queue(queue)) {
     queue->rear = (queue->rear + 1) % queue->max_size;
     if(is_empty_queue(queue)) queue->front = queue->rear;
@@ -22,7 +21,7 @@ void enqueue(int value, Queue *queue) {
 
 int dequeue(Queue *queue) {
   if(is_empty_queue(queue)) {
-    printf("Empty queue");
+    printf("Empty queue\n");
     return -1;
   }
 

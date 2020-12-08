@@ -14,7 +14,7 @@ void error(char* msg) {
 void process_client(int client_sock, Queue *queue) {
 	int msg_size = 0;
 	char msg_in[255], msg_out[512];
-	char instructions[] = "1 - mostra fila\n2 - adiciona numero a fila\n3 - remove da fila";
+	char instructions[] = "1 - mostra fila\n2 <int> - adiciona numero a fila\n3 - remove da fila";
 	while ((msg_size = read(client_sock, msg_in, sizeof(msg_in))) > 0) {
 		write(client_sock, instructions, sizeof(instructions));
 		int val;

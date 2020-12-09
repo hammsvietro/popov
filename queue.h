@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <sys/mman.h>
 
 typedef struct Queue{
   int max_size;
@@ -19,5 +21,7 @@ bool is_empty_queue(Queue *queue);
 bool is_full_queue(Queue *queue);
 void destroy_queue(Queue *queue);
 void print_queue(Queue *queue);
+char* get_queue(Queue *queue);
+int get_queue_size(Queue *queue);
 
 #endif

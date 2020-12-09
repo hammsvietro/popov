@@ -22,4 +22,4 @@ client.o: client.c
 	gcc -Wall -c client.c
 
 clean:
-	rm *.o server client
+	rm *.o server client main

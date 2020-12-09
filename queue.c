@@ -69,7 +69,7 @@ char* get_queue(Queue *queue) {
   char *string_queue = malloc(sizeof(char) * 50);
   
   if(is_empty_queue(queue)) return "queue is empty";
-  strncat(string_queue, "Queue: [");
+  strncat(string_queue, "Queue: [", 8);
 
   if(get_queue_size(queue) == 1) {
     sprintf(string_queue, "%s%d]\n", string_queue, queue->arr[queue->front]);

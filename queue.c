@@ -6,7 +6,7 @@ Queue* init_queue(int max_size) {
   queue->max_size = max_size;
   queue->arr = mmap(NULL, sizeof(int) * 100, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
   queue->front = queue->rear = -1;
-  printf("queue initialized\n");
+  printf("Queue initialized\n");
   return queue;
 }
 

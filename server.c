@@ -70,8 +70,7 @@ int main(int argc, char *argv[]) {
 	if (bind(sock,(struct sockaddr*)&addr,sizeof(addr)) < 0) error("bind");
 	if (listen(sock, 5) < 0) error("listen");
 	printf("Esperando conexao...\n");
-	volatile Queue *queue = mmap(NULL, sizeof(Queue) + (sizeof(int) * 100), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
-	queue = init_queue(100);
+	volatile Queue *queue = init_queue(100);
 	while (1) {
 		client_addr_size = sizeof(client_addr);
 		client = accept(sock, (struct sockaddr *) &client_addr, &client_addr_size);

@@ -16,10 +16,13 @@ void error(char* msg) {
 void process_client(int client_sock, Queue *queue) {
 	int msg_size = 0;
 	char msg_in[255], msg_out[512];
+
+	// mensagem padrão de instrução
 	char instructions[] = "1 - mostra fila\n2 <int> - adiciona numero a fila\n3 - remove da fila";
 	while ((msg_size = read(client_sock, msg_in, sizeof(msg_in))) > 0) {
 		int val;
 		char op;
+		// aloca estaço na memoria para o output (300 bytes de espaço)
 		char *output = malloc(sizeof(char) * 300);
 		sscanf(msg_in, "%c %d", &op, &val);
 		switch (op) {
@@ -29,12 +32,14 @@ void process_client(int client_sock, Queue *queue) {
 				break;
 
 			case '2':
+				// adiciona na fila o valor passado
 				enqueue(val, queue);
 				output = get_queue(queue);
 				print_queue(queue);
 				break;
 			
 			case '3':
+			// remove da fila
 				dequeue(queue);
 				output = get_queue(queue);
 				print_queue(queue);
@@ -56,6 +61,8 @@ int main(int argc, char *argv[]) {
 	int sock, client;
 	unsigned int client_addr_size; 
 	struct sockaddr_in addr, client_addr;
+
+	// cria lock para evitar problemas de concorrencia
 	pthread_mutex_t mtx=PTHREAD_MUTEX_INITIALIZER;
 
 	if (argc != 2) error("srvx <porta>\n");
@@ -70,15 +77,21 @@ int main(int argc, char *argv[]) {
 	if (bind(sock,(struct sockaddr*)&addr,sizeof(addr)) < 0) error("bind");
 	if (listen(sock, 5) < 0) error("listen");
 	printf("Esperando conexao...\n");
+
+	// cria fila com a flag volatile para indicar que ela pode mudar externamente.
 	volatile Queue *queue = init_queue(100);
+
 	while (1) {
 		client_addr_size = sizeof(client_addr);
 		client = accept(sock, (struct sockaddr *) &client_addr, &client_addr_size);
 		if (client > 0) {
 			if (fork() == 0) {
 				close(sock);
+				// trava semáforo
 				pthread_mutex_lock(&mtx);
+				//lida com a requisição
 				process_client(client, queue);
+				// libera semáforo
 				pthread_mutex_unlock(&mtx);
 				exit(0);
 			}
